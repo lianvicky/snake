@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+<script src="Game.js"></script>
+<script src="Map.js"></script>
+<script src="Food.js"></script>
+<script src="Snake.js"></script>
+<script>
+  var map=new Map({color:"cyan"});
+  map.render();
+  var food=new Food({map:map});
+  food.render();
+  var snake=new Snake({map:map});
+  control();
+  var t=setInterval(function(){
+    map.map.innerHTML='';
+    food.render();
+    snake.render();
+    snake.move();
+    impact();
+    gameover();
+  },200);
+function control(){
+  window.onkeydown=function(e){
+    var e=e||window.event;
+   var keyCode= e.keyCode;
+    switch(keyCode){
+      case 37:
+        snake.direction="left";
+        break;
+      case 38:
+        snake.direction="up";
+        break;
+      case 39:
+        snake.direction="right";
+        break;
+      case 40:
+        snake.direction="down";
+        break;
+    }
+  }
+}
+  function impact(){
+    var head=snake.body[0];
+    if(head.x==food.x&&head.y==food.y){
+      snake.eat();
+      food.setPos();
+    }
+  }
+function gameover(){
+  var head=snake.body[0];
+  if(head.x<0||head.y<0||head.x>map.col||head.y>map.row){
+    clearInterval(t);
+    alert("gameover!");
+  }
+}
+//  var head=this.body[0];
+//  switch(this.direction){
+//    case "left":
+//      head.x--;
+//      break;
+//    case "right":
+//      head.x++;
+//      break;
+//    case "up":
+//      head.y--;
+//      break;
+//    case "down":
+//      head.y++;
+//      break;
+//  }
+</script>
+</body>
+</html>
